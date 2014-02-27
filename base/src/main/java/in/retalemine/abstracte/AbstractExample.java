@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractExample {
 
-	static final Logger logger = LoggerFactory.getLogger(AbstractExample.class);
+	private static final Logger logger = LoggerFactory.getLogger(AbstractExample.class);
 
 	public String value = "abstract class";
 
