@@ -15,11 +15,13 @@ import static javax.measure.unit.SI.SECOND;
 import static org.jscience.economics.money.Currency.USD;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Power;
 import javax.measure.quantity.Volume;
+import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
@@ -57,6 +59,11 @@ public class JscienceExamples {
 		logger.info("Measure Mass gram value {}", m.doubleValue(GRAM));
 		logger.info("Measure Mass milligram value {}",
 				m.doubleValue(MILLI(GRAM)));
+
+		Measure<Double, Dimensionless> p0 = Measure
+				.valueOf(50.0, NonSI.PERCENT);
+		logger.info("Measure Dimensionless percent value {}",
+				p0.doubleValue(NonSI.PERCENT));
 	}
 
 	private void unitExa() {
@@ -75,6 +82,9 @@ public class JscienceExamples {
 		logger.info("Unit validation {}",
 				Unit.valueOf("ft").equals(SI.METER.times(0.3048)));
 
+		Measure<Double, Mass> productUnit = Measure.valueOf(1.0, KILOGRAM);
+		logger.info("Unit validation - unit {}", productUnit.getUnit());
+
 	}
 
 	private void compundExa() {
@@ -85,22 +95,32 @@ public class JscienceExamples {
 	}
 
 	private void AmountExa() {
-		Amount<?> oilPrice = Amount.valueOf(120, USD.divide(LITER)); // 120
-																		// INR/L
+		Amount<?> oilPrice = Amount.valueOf(120, USD.divide(LITER));// 120 INR/L
 		logger.info("Amont ? exact value {}", oilPrice.getExactValue());
 		logger.info("Amont ? value {}", oilPrice);
-		Amount<Money> price = Amount.valueOf(1.20, USD);
+
+		Amount<Money> price = Amount.valueOf(100, USD);
 		logger.info("Amont Money value {}", price);
 		logger.info("Amont Money abs value {}", price.abs());
 		logger.info("Amont Money estimated value {}", price.getEstimatedValue());
-		logger.info("Amont Money estimated value {}", (Double)price.getEstimatedValue());
+		logger.info("Amont Money estimated value {}",
+				(Double) price.getEstimatedValue());
 		logger.info("Amont Money doubleValue {}",
 				price.doubleValue(price.getUnit()));
 		// logger.info("Amont Money exact value {}", price.getExactValue());
+
 		Unit<Money> DOLLAR_CENT = USD.compound(CENTI(USD));
 		Currency.setReferenceCurrency(USD);
 		logger.info("Amont Money to compund Dollar_Cent {}",
 				price.to(DOLLAR_CENT));
+
+		Measure<Double, Dimensionless> percent = Measure.valueOf(25.0,
+				NonSI.PERCENT);
+		logger.info("Measure Dimensionless percent value {}",
+				percent.doubleValue(NonSI.PERCENT));
+		double percentprice = price.getEstimatedValue() * percent.getValue()
+				/ 100;
+		logger.info("Amount Dimensionless percent value {}", percentprice);
 
 	}
 
