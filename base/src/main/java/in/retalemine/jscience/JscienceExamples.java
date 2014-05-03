@@ -15,11 +15,13 @@ import static javax.measure.unit.SI.SECOND;
 import static org.jscience.economics.money.Currency.USD;
 
 import javax.measure.Measure;
+import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Duration;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Mass;
 import javax.measure.quantity.Power;
+import javax.measure.quantity.Quantity;
 import javax.measure.quantity.Volume;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
@@ -41,6 +43,68 @@ public class JscienceExamples {
 		unitExa();
 		compundExa();
 		AmountExa();
+		ComputeAmoutViaUnitExa();
+	}
+
+	private void ComputeAmoutViaUnitExa() {
+		logger.info("unit Quantity ->{}",
+				Measure.valueOf(1.0, Unit.valueOf("kg")));
+		logger.info("unit Price ->{}", Amount.valueOf(150.0, USD));
+		logger.info("Quantity ->{}",
+				Measure.valueOf(500.0, MILLI(Unit.valueOf("kg"))));
+		logger.info("Amount ->{}", Amount.valueOf(75.0, USD));
+		Measure<Double, ? extends Quantity> unitQuantity = Measure.valueOf(1.0,
+				Unit.valueOf("kg"));
+		Amount<Money> unitPrice = Amount.valueOf(150.0, USD);
+		// Measure<Double, ? extends Quantity> quantity = Measure.valueOf(500.0,
+		// MILLI(Unit.valueOf("kg")));
+		Measure<Double, ? extends Quantity> quantity = Measure.valueOf(500.0,
+				Unit.valueOf("g"));
+		logger.info("unit Quantity ->{}", unitQuantity);
+		logger.info("unit Price ->{}", unitPrice);
+		logger.info("Quantity ->{}", quantity);
+		logger.info("Unit Q dim {}", unitQuantity.getUnit().getDimension());
+		logger.info("Unit Q std {}", unitQuantity.getUnit().getStandardUnit());
+		logger.info("Unit Q inr {}", unitQuantity.getUnit().inverse());
+		logger.info("Unit Q isstd {}", unitQuantity.getUnit().isStandardUnit());
+		logger.info("Unit Q tostd {}", unitQuantity.getUnit().toStandardUnit());
+		logger.info("Unit Q tostr {}", unitQuantity.getUnit().toString());
+
+		logger.info("Qty Q dim {}", quantity.getUnit().getDimension());
+		logger.info("Qty Q std {}", quantity.getUnit().getStandardUnit());
+		logger.info("Qty Q inr {}", quantity.getUnit().inverse());
+		logger.info("Qty Q isstd {}", quantity.getUnit().isStandardUnit());
+		logger.info("Qty Q tostd {}", quantity.getUnit().toStandardUnit());
+		logger.info("Qty Q tostr {}", quantity.getUnit().toString());
+
+		// Unit<? extends Quantity> unit = Unit.valueOf("kg");
+		// Measure<Double, ?> convertedQuantity = converterTemplate(
+		// Measure.valueOf(1.0, unit),
+		// Measure.valueOf(500.0, MILLI(Unit.valueOf("kg"))));
+		// logger.info("Converted Quantity ->{}", convertedQuantity);
+
+		// Amount<Money> amount =
+		// unitPrice.times(quantity.to(unitQuantity.getUnit()).getValue() /
+		// unitQuantity.getValue());
+
+		// Amount<Money> amount = compute(unitPrice, unitQuantity, quantity);
+
+		UnitConverter quantityToUnit = quantity.getUnit().getConverterTo(
+				unitQuantity.getUnit());
+		Double quantityVal = quantityToUnit.convert(quantity.getValue());
+		logger.info("actual {}", quantity.getValue());
+		logger.info("converted {}", quantityVal);
+	}
+
+	private <T extends Quantity> Amount<Money> compute(Amount<Money> unitPrice,
+			Measure<Double, T> unitQuantity, Measure<Double, T> quantity) {
+		return unitPrice.times(quantity.to(unitQuantity.getUnit()).getValue()
+				/ unitQuantity.getValue());
+	}
+
+	private <T extends Quantity> Measure<Double, T> converterTemplate(
+			Measure<Double, T> unitQuantity, Measure<Double, T> quantity) {
+		return quantity.to(unitQuantity.getUnit());
 	}
 
 	private void measureExa() {
@@ -85,6 +149,16 @@ public class JscienceExamples {
 		Measure<Double, Mass> productUnit = Measure.valueOf(1.0, KILOGRAM);
 		logger.info("Unit validation - unit {}", productUnit.getUnit());
 
+		SI si = SI.getInstance();
+		if (si.getUnits().contains("kg")) {
+			logger.info("contains kg");
+		}
+
+		Unit<?> kgunit = Unit.valueOf("kg");
+		logger.info("unit value {}", kgunit.getClass());
+
+		logger.info("unit of k {}", Unit.valueOf("k"));
+
 	}
 
 	private void compundExa() {
@@ -99,7 +173,7 @@ public class JscienceExamples {
 		logger.info("Amont ? exact value {}", oilPrice.getExactValue());
 		logger.info("Amont ? value {}", oilPrice);
 
-		Amount<Money> price = Amount.valueOf(100, USD);
+		Amount<Money> price = Amount.valueOf(10.5, USD);
 		logger.info("Amont Money value {}", price);
 		logger.info("Amont Money abs value {}", price.abs());
 		logger.info("Amont Money estimated value {}", price.getEstimatedValue());

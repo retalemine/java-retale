@@ -4,6 +4,7 @@ import in.retalemine.abstracte.AbstractChildExample;
 import in.retalemine.enume.EnumTest;
 import in.retalemine.generics.GenericExamples;
 import in.retalemine.jscience.JscienceExamples;
+import in.retalemine.jscience.RetaUnitExample;
 import in.retalemine.regex.RegExExample;
 
 /**
@@ -16,6 +17,7 @@ public class App {
 		if (args.length > 0) {
 			if (args[0].equalsIgnoreCase("jscience")) {
 				new JscienceExamples();
+				new RetaUnitExample();
 			} else if (args[0].equalsIgnoreCase("abstract")) {
 				new AbstractChildExample();
 			} else if (args[0].equalsIgnoreCase("enum")) {
