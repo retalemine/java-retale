@@ -30,6 +30,7 @@ import javax.measure.unit.Unit;
 import org.jscience.economics.money.Currency;
 import org.jscience.economics.money.Money;
 import org.jscience.physics.amount.Amount;
+import org.jscience.physics.amount.AmountFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,7 +158,7 @@ public class JscienceExamples {
 		Unit<?> kgunit = Unit.valueOf("kg");
 		logger.info("unit value {}", kgunit.getClass());
 
-		logger.info("unit of k {}", Unit.valueOf("k"));
+		logger.info("unit of k {}", Unit.valueOf("kg"));
 
 	}
 
@@ -196,6 +197,43 @@ public class JscienceExamples {
 				/ 100;
 		logger.info("Amount Dimensionless percent value {}", percentprice);
 
+		Amount<Money> billamt = Amount.valueOf(80.50, USD);
+		Amount<Money> rcdamt = Amount.valueOf(90, USD);
+		Amount<Money> pbamt = rcdamt.minus(billamt);
+		logger.info("bill amt calculation pbamt {}", pbamt);
+		logger.info("bill amt calculation pbamt {}", pbamt.getEstimatedValue());
+		AmountFormat.setInstance(AmountFormat.getPlusMinusErrorInstance(0));
+		billamt = Amount.valueOf(95.50, USD);
+		rcdamt = Amount.valueOf(80, USD);
+		pbamt = rcdamt.minus(billamt);
+		logger.info("bill amt calculation pbamt {}", pbamt);
+		logger.info("bill amt calculation pbamt {}", pbamt.getEstimatedValue());
+		AmountFormat.setInstance(AmountFormat.getPlusMinusErrorInstance(4));
+		billamt = Amount.valueOf(95.50, USD);
+		rcdamt = Amount.valueOf(80, USD);
+		pbamt = rcdamt.minus(billamt);
+		logger.info("bill amt calculation pbamt {}", pbamt);
+		logger.info("bill amt calculation pbamt {}", pbamt.getEstimatedValue());
+		AmountFormat.setInstance(AmountFormat.getExactDigitsInstance());
+		billamt = Amount.valueOf(95.50, USD);
+		rcdamt = Amount.valueOf(80, USD);
+		pbamt = rcdamt.minus(billamt);
+		logger.info("bill amt calculation pbamt {}", pbamt);
+		logger.info("bill amt calculation pbamt {}", pbamt.getEstimatedValue());
+		AmountFormat.setInstance(AmountFormat.getPlusMinusErrorInstance(2));
+		billamt = Amount.valueOf(80.50, USD);
+		rcdamt = Amount.valueOf(90, USD);
+		pbamt = rcdamt.minus(billamt);
+		pbamt = pbamt.times(-1);
+		logger.info("bill amt calculation pbamt {}", pbamt);
+		logger.info("bill amt calculation pbamt {}", pbamt.getEstimatedValue());
+		AmountFormat.setInstance(AmountFormat.getPlusMinusErrorInstance(2));
+		billamt = Amount.valueOf(80.50, USD);
+		rcdamt = Amount.valueOf(90, USD);
+		pbamt = rcdamt.minus(billamt);
+		pbamt = (Amount<Money>) Amount.valueOf(pbamt.toText());
+		logger.info("bill amt calculation pbamt {}", pbamt);
+		logger.info("bill amt calculation pbamt {}", pbamt.getEstimatedValue());
 	}
 
 }
