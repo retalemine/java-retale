@@ -12,6 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<itext-MPL-LGPL.version>4.2.1</itext-MPL-LGPL.version>
 	</properties>
 
 	<dependencies>
@@ -40,6 +41,12 @@
 			<groupId>org.jscience</groupId>
 			<artifactId>jscience</artifactId>
 			<version>4.3.1</version>
+		</dependency>
+		<!-- util: itext pdf creator MPL/LGPL -->
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>${itext-MPL-LGPL.version}</version>
 		</dependency>
 	</dependencies>
 </project>
